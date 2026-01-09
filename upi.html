@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UPI Payment - SweetHours Cafe</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- <link rel="stylesheet" href="upi.css" /> -->
+   <style>
+    body {
+      background-color: #fdf6f0;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #1A1A40;
+    }
+
+    .payment-box {
+      background: #fff;
+      padding: 30px;
+      max-width: 400px;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #e91e63;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+   #qrcode {
+  margin: 20px auto;
+  width: fit-content;
+}
+
+
+    .or-line {
+      margin: 20px 0;
+      font-weight: bold;
+    }
+   </style>
+</head>
+
+<body>
+  <h1>Complete Your Payment</h1>
+  <div class="payment-box">
+    <h3>Pay using UPI</h3>
+    <input type="text" id="upiInput" placeholder="Enter your UPI ID (e.g. someone@upi)" required />
+    <button onclick="payWithUPI()">Proceed to Pay</button>
+
+    <div class="or-line">OR</div>
+
+    <h3>Scan This QR Code</h3>
+    <div id="qrcode"></div>
+  </div>
+
+  <script>
+    // STEP 1: Get cart data from localStorage
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // STEP 2: Calculate total
+    let total = 0;
+    cart.forEach(item => {
+      total += item.price * item.qty;
+    });
+
+    // STEP 3: Create dynamic UPI link
+    const upiLink = `upi://pay?pa=sweethours@upi&pn=SweetHoursCafe&am=${total}&cu=INR`;
+
+    // STEP 4: Show QR with dynamic amount
+    new QRCode(document.getElementById("qrcode"), {
+      text: upiLink,
+      width: 180,
+      height: 180,
+      colorDark: "#000",
+      colorLight: "#fff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
+    function payWithUPI() {
+      const upiId = document.getElementById("upiInput").value.trim();
+      if (!upiId || !upiId.includes("@")) {
+        alert("Please enter a valid UPI ID.");
+        return;
+      }
+      alert(`Payment of ₹${total} initiated via UPI ID: ${upiId} \n(For demo purposes only)`);
+      window.location.href = "paymentsuccess.html";
+    }
+  </script>
+
+</body>
+
+</html>

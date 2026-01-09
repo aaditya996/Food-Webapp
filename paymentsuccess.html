@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Success - SweetHours Cafe</title>
+  <style>
+    body {
+      background-color: #f1fff2;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .receipt-box {
+      background: white;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #28a745;
+    }
+
+    .receipt-box h3 {
+      margin-top: 30px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+    }
+
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+      font-size: 16px;
+    }
+
+    .total-row {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    .info {
+      margin-top: 20px;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt-box">
+    <h1>🎉 Payment Successful!</h1>
+    <p>Thank you for your order.</p>
+
+    <h3>Order Receipt</h3>
+    <div id="order-details"></div>
+    <div class="total-row">Total: ₹<span id="total-price">0</span></div>
+
+    <div class="info">
+      <p><strong>Paid via:</strong> UPI (sweethours@upi)</p>
+      <p><strong>Date:</strong> <span id="date-time"></span></p>
+    </div>
+
+    <button onclick="goHome()">Back to Menu</button>
+  </div>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const details = document.getElementById("order-details");
+    const totalPriceSpan = document.getElementById("total-price");
+    let total = 0;
+
+    cart.forEach(item => {
+      const row = document.createElement("div");
+      row.className = "item-row";
+      const itemTotal = item.qty * item.price;
+      total += itemTotal;
+      row.innerHTML = `<span>${item.name} x${item.qty}</span><span>₹${itemTotal}</span>`;
+      details.appendChild(row);
+    });
+
+    totalPriceSpan.textContent = total;
+    document.getElementById("date-time").textContent = new Date().toLocaleString();
+
+    function goHome() {
+      localStorage.removeItem("cart");
+      window.location.href = "menu.html";
+    
+    }
+
+
+  </script>
+</body>
+</html>

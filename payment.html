@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment - SweetHours Cafe</title>
+    <!-- <link rel="stylesheet" href="payment.css" /> -->
+     <style>
+        /* payment.css */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fef6f0;
+  color: #3b3b3b;
+}
+
+header {
+  background-color: #5e17eb;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.checkout-container {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+#checkout-form h2 {
+  color: #5e17eb;
+  margin-bottom: 10px;
+}
+
+#checkout-form input,
+#checkout-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+}
+
+#order-summary {
+  padding: 10px;
+  background-color: #fafafa;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+#total-amount {
+  font-weight: bold;
+  color: #e91e63;
+  font-size: 20px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  background-color: #e91e63;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: #d81b60;
+}
+.main-footer {
+    background-color: #1A1A40;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+    margin-top: 40px;
+    font-size: 14px;
+  }
+  
+  .main-footer .social-icons {
+    margin: 10px 0;
+  }
+  
+  .main-footer .social-icons a {
+    color: white;
+    font-size: 24px;
+    margin: 0 12px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .main-footer .social-icons a:hover {
+    color: #FF6B6B; /* highlight color on hover */
+  }
+  
+     </style>
+</head>
+
+<body>
+    <header>
+        <h1>Checkout - SweetHours Cafe</h1>
+    </header>
+
+    <section class="checkout-container">
+        <form id="checkout-form">
+            <h2>Your Details</h2>
+            <input type="text" placeholder="Full Name" id="name" required />
+            <input type="tel" placeholder="Mobile Number" id="mobile" required />
+            <textarea placeholder="Delivery Address" id="address" required></textarea>
+
+            <h2>Your Order</h2>
+            <div id="order-summary"></div>
+
+            <h3>Total: ₹<span id="total-amount">0</span></h3>
+
+            <button type="submit">Proceed to Payment</button>
+        </form>
+    </section>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function loadSummary() {
+            const orderDiv = document.getElementById("order-summary");
+            const totalSpan = document.getElementById("total-amount");
+            orderDiv.innerHTML = "";
+
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.qty;
+                total += itemTotal;
+                const div = document.createElement("div");
+                div.className = "summary-item";
+                div.innerHTML = `${item.name} x${item.qty} - ₹${itemTotal}`;
+                orderDiv.appendChild(div);
+            });
+
+            totalSpan.textContent = total;
+        }
+
+        document.getElementById("checkout-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const mobile = document.getElementById("mobile").value.trim();
+            const address = document.getElementById("address").value.trim();
+
+            if (!name || !mobile || !address) {
+                alert("Please fill all details correctly.");
+                return;
+            }
+
+            const thankYouMsg = `🎉 Thank you, ${name}!\n\nYour order has been received.\nWe will deliver it to:\n${address}`;
+            alert(thankYouMsg);
+
+            
+
+            // 🔁 Redirect after 5 seconds (5000ms)
+            setTimeout(() => {
+                window.location.href = "upi.html";
+            }, 4000);
+        });
+
+
+        loadSummary();
+    </script>
+    <footer class="main-footer">
+        <p>Connect with us:</p>
+        <div class="social-icons">
+            <a href="https://wa.me/your-number" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.facebook.com/your-page" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/your-username" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2025 SweetHours Cafe. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>
